@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CDlgTest.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MFCmemo.h" />
     <ClInclude Include="MFCmemoDlg.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CDlgTest.cpp" />
     <ClCompile Include="MFCmemo.cpp" />
     <ClCompile Include="MFCmemoDlg.cpp" />
     <ClCompile Include="pch.cpp">

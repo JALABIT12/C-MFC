@@ -44,5 +44,10 @@ public:
 	afx_msg void OnMnuViewUpper();
 	afx_msg void OnMnuViewHexa();
 	afx_msg void OnMnuExit();
-	afx_msg void OnEnChangeTbMemo2();
+	afx_msg void OnEnChangeTbMemo1();
+	afx_msg void OnMnuFileOpen();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	
+	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
+	afx_msg void OnBnClickedBtnCalltest();
 };

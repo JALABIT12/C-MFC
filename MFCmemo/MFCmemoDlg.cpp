@@ -1,5 +1,4 @@
-﻿
-// MFCmemoDlg.cpp: 구현 파일
+﻿// MFCmemoDlg.cpp: 구현 파일
 //
 
 #include "pch.h"
@@ -7,25 +6,24 @@
 #include "MFCmemo.h"
 #include "MFCmemoDlg.h"
 #include "afxdialogex.h"
+#include "CDlgTest.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다. 
 
-class CAboutDlg : public CDialogEx 
+class CAboutDlg : public CDialogEx
 {
 public:
 	CAboutDlg();
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 // 구현입니다.
@@ -45,10 +43,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
-
 // CMFCmemoDlg 대화 상자
-
-
 
 CMFCmemoDlg::CMFCmemoDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_MFCMEMO_DIALOG, pParent)
@@ -76,7 +71,11 @@ BEGIN_MESSAGE_MAP(CMFCmemoDlg, CDialogEx)
 	ON_COMMAND(ID_MNU_VIEW_UPPER, &CMFCmemoDlg::OnMnuViewUpper)
 	ON_COMMAND(ID_MNU_VIEW_HEXA, &CMFCmemoDlg::OnMnuViewHexa)
 	ON_COMMAND(ID_MNU_EXIT, &CMFCmemoDlg::OnMnuExit)
-	ON_EN_CHANGE(IDC_TB_MEMO2, &CMFCmemoDlg::OnEnChangeTbMemo2)
+	ON_COMMAND(ID_MNU_FILE_OPEN, &CMFCmemoDlg::OnMnuFileOpen)
+	ON_WM_SIZE()
+
+	ON_WM_ACTIVATE()
+	ON_BN_CLICKED(IDC_BTN_CALLTEST, &CMFCmemoDlg::OnBnClickedBtnCalltest)
 END_MESSAGE_MAP()
 
 
@@ -112,7 +111,8 @@ BOOL CMFCmemoDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-
+	ShowWindow(SW_SHOW);
+	((CButton*)GetDlgItem(IDC_RADIO1))->SetState(true);
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
 
@@ -181,9 +181,10 @@ void CMFCmemoDlg::OnClickedBtnTest()
 		while (*sp) sp++;
 		//CString class를 이용한 경우
 		cs1.Format("%02X ", str[i]);
+		if (i % 8 == 0) cs += "\r\n"; // 8문자마다 줄바꿈
 		cs += cs1;
 	}
-	CMemo2.SetWindowTextA(buf);
+	//CMemo2.SetWindowTextA(buf);
 	CMemo2.SetWindowTextA(cs);
 	CString cstr, s1; 
 	cstr;
@@ -239,7 +240,18 @@ void CMFCmemoDlg::OnMnuViewUpper()
 
 void CMFCmemoDlg::OnMnuViewHexa()
 {
-	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CString cstr, cs, cs1;
+	CMemo1.GetWindowTextA(cstr);
+	char *str = cstr.GetBuffer();  // 1 l I |
+	for (int i = 0; *(str + i); i++) //i<strlen(str)      for (int i = 0; str[i]!=0; i++) *==[]
+	{
+		//CString class를 이용한 경우
+		cs1.Format("%02X ", (unsigned char)str[i]);
+		if (i % 16 == 0) cs += "\r\n"; // 16문자마다 줄바꿈
+		cs += cs1;
+	}
+	//CMemo2.SetWindowTextA(buf);
+	CMemo2.SetWindowTextA(cs);
 }
 
 
@@ -249,12 +261,76 @@ void CMFCmemoDlg::OnMnuExit()
 }
 
 
-void CMFCmemoDlg::OnEnChangeTbMemo2()
-{
-	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
-	// CDialogEx::OnInitDialog() 함수를 재지정 
-	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
-	// 이 알림 메시지를 보내지 않습니다.
 
-	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+void CMFCmemoDlg::OnMnuFileOpen()
+{
+	OPENFILENAME ofn; //윈도우에서 제공하는 구조체
+	char fName[512]; //file name을 저장할 공간, 최대 버퍼 사이즈 지정
+	HWND hwnd = m_hWnd;//window handle 핸들   메인 윈도우에 속한다.
+	HANDLE hd;
+	FILE* fp;
+
+	ZeroMemory(&ofn, sizeof(ofn)); //메모리 Clear===>0
+	ofn.lStructSize=sizeof(ofn);
+	ofn.hwndOwner=hwnd; //open dialog box가 어느 윈도우에 속하는지
+	ofn.lpstrFile=fName;
+	ofn.lpstrFile[0]='\0';
+	ofn.nMaxFile = sizeof(fName); //현재 파일 사이즈
+	ofn.lpstrFilter="All\0*.*\0Text\0*.TXT\0"; //파일 오픈시 어떤 파일 종류를 보여 줄 것인지
+	ofn.nFilterIndex = 1; //디폴트 파일 인덱스는 1번
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle=0;
+	ofn.lpstrInitialDir=NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST; //어떠한 형태로 플래그를 할 것인가
+	
+	//Display the Open dialog box.
+
+	if (GetOpenFileName(&ofn) == TRUE)//filename
+	{
+		CString cstr;
+		fp = fopen(fName, "r+b");
+		char* buf = fName;
+
+		while (fgets(buf, 512, fp) != NULL) //정상적으로 읽었다면
+		{
+			cstr += buf;
+		}
+		CMemo1.SetWindowTextA(cstr);
+	}
+}
+
+
+void CMFCmemoDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	if (GetDlgItem(IDC_TB_MEMO1) != NULL)  //초기는 NULL이다.
+	{
+		CMemo1.SetWindowPos(NULL, 5, 5, cx / 2, cy / 2, 0);
+		CMemo2.SetWindowPos(NULL, 5, cy/2+5, cx / 2, cy / 2-10, 0);
+	}
+	
+}
+
+
+
+void CMFCmemoDlg::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
+{
+	CDialogEx::OnActivate(nState, pWndOther, bMinimized);
+	CRect r; // Client 영역을 담기 위한 구조체 클래스
+	GetClientRect(&r);
+	OnSize(0, r.Width(), r.Height());
+}
+
+
+void CMFCmemoDlg::OnBnClickedBtnCalltest()
+{
+	//MessageBox("메시지 박스 테스트중입니다.\n줄바꿈이 먹을까요?");
+	//CDlgTest dlg;
+	//dlg.DoModal();
+
+	CDlgTest* dlg = new CDlgTest();
+	dlg->DoModal();
+	delete dlg;
 }
