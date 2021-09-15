@@ -1,0 +1,10 @@
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\bin\Debug\MFCMEMO.exe.config
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\bin\Debug\MFCMEMO.exe
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\bin\Debug\MFCMEMO.pdb
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\obj\Debug\MFCMEMO.csproj.AssemblyReference.cache
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\obj\Debug\MFCMEMO.Form1.resources
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\obj\Debug\MFCMEMO.Properties.Resources.resources
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\obj\Debug\MFCMEMO.csproj.GenerateResource.cache
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\obj\Debug\MFCMEMO.csproj.CoreCompileInputs.cache
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\obj\Debug\MFCMEMO.exe
+C:\Users\JALAB\source\repos\IoT\C#\MFCMEMO\MFCMEMO\obj\Debug\MFCMEMO.pdb
