@@ -144,7 +144,7 @@ namespace myNotepad
         // 설명 : 문자열 str에 있는 데이터를 구분자 d를 통해 필드를 구분하여, 그 중 n번째 데이터를 반환
         //  ex) GetToken(1, "a,b,c,d", ',') ===> "b"
         //GetToken 함수를 이용하여 GetFileName 함수를 구현하세요.
-        string GetToken(int n, string str, char d)
+        string GetTokenEx(int n, string str, char d)
         {
             int i, j, k,n1,n2; //n1 = start, n2 = end
 
@@ -160,6 +160,12 @@ namespace myNotepad
             if (n1 == 0) return "";
             if (n2 == 0) n2 = str.Length+1;
             return str.Substring(n1,n2-1-n1); //n2-n1-1=length 구분자는 빼고 복사: n2-1
+        }
+        string GetToken(int n, string str, char d)
+        {
+            string[] sArr = str.Split(d);
+            if(n < sArr.Length) return sArr[n]; //임계조건 체크필수
+            return "";
         }
         int num = 0;
         private void mnuEditTest_Click(object sender, EventArgs e)
