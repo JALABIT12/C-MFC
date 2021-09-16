@@ -1,0 +1,15 @@
+
+        private void mnuFileSave_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void mnuFileSaveAs_Click(object sender, EventArgs e)
+        {
+            saveFileDialog.ShowDialog();
+            //tbMemo.Text += saveFileDialog.FileName;
+            StreamWriter sw = new StreamWriter(saveFileDialog.FileName);
+            sw.Write(tbMemo.Text);
+            sw.Close();
+        }
+    }
