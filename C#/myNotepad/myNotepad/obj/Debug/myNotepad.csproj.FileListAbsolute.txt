@@ -8,3 +8,4 @@ C:\Users\JALAB\source\repos\IoT\C#\myNotepad\myNotepad\obj\Debug\myNotepad.cspro
 C:\Users\JALAB\source\repos\IoT\C#\myNotepad\myNotepad\obj\Debug\myNotepad.exe
 C:\Users\JALAB\source\repos\IoT\C#\myNotepad\myNotepad\obj\Debug\myNotepad.pdb
 C:\Users\JALAB\source\repos\IoT\C#\myNotepad\myNotepad\obj\Debug\myNotepad.Notepad.resources
+C:\Users\JALAB\source\repos\IoT\C#\myNotepad\myNotepad\obj\Debug\myNotepad.Form2.resources

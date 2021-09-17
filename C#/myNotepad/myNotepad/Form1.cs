@@ -167,10 +167,39 @@ namespace myNotepad
             if(n < sArr.Length) return sArr[n]; //임계조건 체크필수
             return "";
         }
+        void AddLine(string str)
+        {
+            tbMemo.Text += str + "\r\n";
+        }
         int num = 0;
         private void mnuEditTest_Click(object sender, EventArgs e)
         {
-            tbMemo.Text += $"{GetToken(num++, " a,b,c,d", ',')}\r\n";
+            AddLine($"{GetToken(num++, " a,b,c,d", ',')}");
+            //tbMemo.Text += $"{GetToken(num++, " a,b,c,d", ',')}\r\n";
+        }
+
+        private void mnuEditCallTest_Click(object sender, EventArgs e)
+        {
+            Form2 dlg = new Form2();
+            if(dlg.ShowDialog() == DialogResult.OK) //COM1:9600N81
+            {
+                //string str= (dlg.rbCom1.Checked)? "COM1:": "COM2:";
+                //string str; =>동일한 문장
+                //if (dlg.rbCom1.Checked) str += "COM1:";
+                //else if (dlg.rbCom2.Checked) str += "COM2:";
+                //else str="XXXX:";
+                string str = (dlg.rbCom1.Checked) ? "COM1:" :
+                             (dlg.rbCom2.Checked) ? "COM2:" : "XXX"; //3개인 경우
+
+                str += dlg.cbSpeed.Text;
+                str += dlg.cbParity.Text.Trim().ToUpper()[0]; //None, Odd, Even
+                //trim:공백X, ToUpper:대문자 변환 [0]: 제일 앞 한글자만 가져오도록 설정
+                str += dlg.cbDatabit.Text;
+                str += dlg.cbStopbit.Text;
+                //AddLine(str);
+                //tbMemo.Text += str + "\r\n";
+                sbLabel1.Text = str;
+            }
         }
     }
 }
